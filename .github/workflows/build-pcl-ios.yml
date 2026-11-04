@@ -1,4 +1,4 @@
-name: Build PCL iOS IPA
+buname: Build PCL iOS IPA
 
 on:
   workflow_dispatch:
@@ -89,9 +89,10 @@ jobs:
               plistlib.dump(info, output, sort_keys=False)
           PY
 
-      - name: Build unsigned sideload IPA
+            - name: Build unsigned sideload IPA
         working-directory: ${{ runner.temp }}/Amethyst-iOS
         run: |
+          perl -i -pe 'print "#include <mach/mach.h>\n" if $. == 1' Natives/JavaLauncher.m
           gmake -j2 package \
             PLATFORM=2 \
             RELEASE=1 \
